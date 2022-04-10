@@ -32,6 +32,8 @@ jobs:
 
       - name: cat log
         run: |
-          echo "toJson(steps):"
+          sleep 5
+          echo "${{ toJson(steps) }}"
+          ps -ef
           cat '${{ steps.execute.outputs.log }}'
 ...
