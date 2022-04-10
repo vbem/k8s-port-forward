@@ -20,11 +20,11 @@ Note that this action follow [official *kubeconfig* authentication methods](http
     server:     https://your-kubeapi-server:6443
     ca-base64:  ${{ secrets.K8S_CA_BASE64 }}
     token:      ${{ secrets.K8S_SA_TOKEN }}
-    namespace:  MYNS
+    namespace:  my-namespace
     
 # This action will forward port 8080 on runner to port 80 of your service in Kubernetes!
 - name: Setup Kubernetes port-forward daemon
-  uses: vbem/k8s-port-forward@main
+  uses: vbem/k8s-port-forward@v1
   with:
     workload: 'svc/mysvc'
 
