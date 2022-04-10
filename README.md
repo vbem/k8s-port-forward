@@ -1,7 +1,7 @@
 [![Testing](https://github.com/vbem/k8s-port-forward/actions/workflows/test.yml/badge.svg)](https://github.com/vbem/k8s-port-forward/actions/workflows/test.yml)
 [![Super Linter](https://github.com/vbem/k8s-port-forward/actions/workflows/linter.yml/badge.svg)](https://github.com/vbem/k8s-port-forward/actions/workflows/linter.yml)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/vbem/k8s-port-forward?label=Release&logo=github)](https://github.com/vbem/k8s-port-forward/releases)
-[![Marketplace](https://img.shields.io/badge/GitHub%20Actions-Marketplace-blue?logo=github)](https://github.com/marketplace/actions/k8s-port-forward)
+[![Marketplace](https://img.shields.io/badge/GitHub%20Actions-Marketplace-blue?logo=github)](https://github.com/marketplace/actions/kubernetes-port-forward)
 
 ## About
 
@@ -40,7 +40,7 @@ ID | Type | Default | Description
 --- | --- | --- | ---
 `workload` | String | *Required input* | Kubernetes workload `type/name` such as `deploy/mydeploy`, `svc/mysvc` or `po/mypod`
 `mappings` | String  | `8080:80` | Ports mappings `[LOCAL_PORT:]REMOTE_PORT [...[LOCAL_PORT_N:]REMOTE_PORT_N]`
-`options` | String | `<empty>` | Other command line options, such as `--namespace=myns`
+`options` | String | `<empty>` | Other command-line options, such as `--namespace=myns`
 
 ## Outputs
 

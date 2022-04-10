@@ -12,11 +12,11 @@ inputs:
     description: 'Kubernetes workload `type/name` such as `deploy/mydeploy`, `svc/mysvc` or `po/mypod`'
     required: true
   mappings:
-    description: 'Ports mappings `[LOCAL_PORT:]REMOTE_PORT [...[LOCAL_PORT_N:]REMOTE_PORT_N]`'
+    description: 'Ports mappings `[LOCAL_PORT:]REMOTE_PORT [...[LOCAL_PORT_N:]REMOTE_PORT_N]` (default as `8080:80`)'
     required: false
     default: '8080:80'
   options:
-    description: 'Other command line options, such as `--namespace=myns`'
+    description: 'Other command-line options, such as `--namespace=myns`'
     required: false
     default: ''
 
@@ -66,7 +66,7 @@ runs:
         }
 
         PORT_FORWARD_LOG="${{ runner.temp }}/k8s-pod-forward.$RANDOM.log"
-        kit::wf::group '🚢 Run backgroup daemon' \
+        kit::wf::group '🚢 Run backgroup port-forward daemon' \
           <<<"kubectl port-forward '${{ inputs.workload }}' ${{ inputs.mappings }} ${{ inputs.options }}"
         nohup kubectl port-forward '${{ inputs.workload }}' ${{ inputs.mappings }} ${{ inputs.options }} \
           < /dev/null &> "$PORT_FORWARD_LOG" &
