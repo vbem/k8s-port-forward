@@ -34,6 +34,5 @@ jobs:
         run: |
           sleep 5
           echo "${{ toJson(steps) }}"
-          ps -ef
           cat '${{ steps.execute.outputs.log }}'
 ...

@@ -14,7 +14,7 @@ inputs:
   mappings:
     description: 'Ports mappings `[LOCAL_PORT:]REMOTE_PORT [...[LOCAL_PORT_N:]REMOTE_PORT_N]`'
     required: false
-    default: '80:80'
+    default: '8080:80'
   options:
     description: 'Other command line options, such as `--namespace=myns`'
     required: false
@@ -64,7 +64,7 @@ runs:
             echo "::set-output name=$1::$val"
             kit::wf::group "🖨️ step output '$1' has been set" <<< "${2:-$val}"
         }
-        
+
         PORT_FORWARD_LOG="${{ runner.temp }}/k8s-pod-forward.$RANDOM.log"
         kit::wf::group '🚢 Run backgroup daemon' \
           <<<"kubectl port-forward '${{ inputs.workload }}' ${{ inputs.mappings }} ${{ inputs.options }}"
@@ -72,4 +72,6 @@ runs:
           < /dev/null &> "$PORT_FORWARD_LOG" &
         kit::wf::output 'pid' <<< "$!"
         kit::wf::output 'log' <<< "$PORT_FORWARD_LOG"
+        sleep 1
+        kit::wf::group '🚢 Current port-forward log' < "$PORT_FORWARD_LOG"
 ...
