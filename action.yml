@@ -1,0 +1,75 @@
+---
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+name: Kubernetes port-forward
+author: '@vbem'
+description: Forward local ports to a workload in Kubernetes
+branding:
+  icon: truck
+  color: green
+
+inputs:
+  workload:
+    description: 'Kubernetes workload `type/name` such as `deploy/mydeploy`, `svc/mysvc` or `po/mypod`'
+    required: true
+  mappings:
+    description: 'Ports mappings `[LOCAL_PORT:]REMOTE_PORT [...[LOCAL_PORT_N:]REMOTE_PORT_N]`'
+    required: false
+    default: '80:80'
+  options:
+    description: 'Other command line options, such as `--namespace=myns`'
+    required: false
+    default: ''
+
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#outputs-for-composite-actions
+outputs:
+  pid:
+    description: 'Process ID of port-forward daemon'
+    value: ${{ steps.main.outputs.pid }}
+  log:
+    description: 'Path to port-forward log file'
+    value: ${{ steps.main.outputs.log }}
+
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs-for-composite-actions
+runs:
+  using: composite
+  steps:
+    - id: main
+      shell: bash
+      run: |
+        # implementation details
+
+        # Group stdin to stderr with title
+        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#grouping-log-lines
+        #   $1: group title
+        #   stdin: logs
+        #   stderr: grouped logs
+        #   $?: 0 if successful and non-zero otherwise
+        function kit::wf::group {
+            echo "::group::$1"      >&2
+            echo "$(< /dev/stdin)"  >&2
+            echo '::endgroup::'     >&2
+        }
+
+        # Set stdin as value to output of current step with given name
+        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
+        # https://renehernandez.io/snippets/multiline-strings-as-a-job-output-in-github-actions/
+        #   $1: output name
+        #   $2: masked value in logs
+        #   stdin: output value
+        #   stderr: grouped logs
+        #   $?: 0 if successful and non-zero otherwise
+        function kit::wf::output {
+            local val
+            val="$(< /dev/stdin)"
+            echo "::set-output name=$1::$val"
+            kit::wf::group "🖨️ step output '$1' has been set" <<< "${2:-$val}"
+        }
+        
+        PORT_FORWARD_LOG="${{ runner.temp }}/k8s-pod-forward.$RANDOM.log"
+        kit::wf::group '🚢 Run backgroup daemon' \
+          <<<"kubectl port-forward '${{ inputs.workload }}' ${{ inputs.mappings }} ${{ inputs.options }}"
+        nohup kubectl port-forward '${{ inputs.workload }}' ${{ inputs.mappings }} ${{ inputs.options }} \
+          < /dev/null &> "$PORT_FORWARD_LOG" &
+        kit::wf::output 'pid' <<< "$!"
+        kit::wf::output 'log' <<< "$PORT_FORWARD_LOG"
+...

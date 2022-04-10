@@ -1,0 +1,37 @@
+---
+name: Testing
+
+env:
+  TZ: Asia/Shanghai
+
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-only-cancel-in-progress-jobs-or-runs-for-the-current-workflow
+concurrency:
+  group: ${{ github.workflow }}@${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push: # If you define neither 'tags' nor 'branches', the workflow will run for either branches or tags.
+    paths:
+      - 'action.yml'
+      - '.github/workflows/test.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v3
+
+      - name: execute action
+        id: execute
+        uses: ./
+        with:
+          workload: svc/mysvc
+
+      - name: cat log
+        run: |
+          echo "toJson(steps):"
+          cat '${{ steps.execute.outputs.log }}'
+...
