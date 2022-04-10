@@ -70,8 +70,8 @@ runs:
           <<<"kubectl port-forward '${{ inputs.workload }}' ${{ inputs.mappings }} ${{ inputs.options }}"
         nohup kubectl port-forward '${{ inputs.workload }}' ${{ inputs.mappings }} ${{ inputs.options }} \
           < /dev/null &> "$PORT_FORWARD_LOG" &
-        sleep 1
-        kit::wf::group '🚢 Current port-forward log' < "$PORT_FORWARD_LOG"
         kit::wf::output 'pid' <<< "$!"
         kit::wf::output 'log' <<< "$PORT_FORWARD_LOG"
+        sleep 3
+        kit::wf::group '🚢 Current port-forward log' < "$PORT_FORWARD_LOG"
 ...
