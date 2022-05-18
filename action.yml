@@ -19,6 +19,10 @@ inputs:
     description: 'Other command-line options, such as `--namespace=myns`'
     required: false
     default: ''
+  sleep:
+    description: 'Seconds to wait before action finished (default as `3`)'
+    required: false
+    default: '3'
 
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#outputs-for-composite-actions
 outputs:
@@ -72,6 +76,6 @@ runs:
           < /dev/null &> "$PORT_FORWARD_LOG" &
         kit::wf::output 'pid' <<< "$!"
         kit::wf::output 'log' <<< "$PORT_FORWARD_LOG"
-        sleep 3
+        sleep '${{ inputs.sleep }}'
         kit::wf::group '🚢 Current port-forward log' < "$PORT_FORWARD_LOG"
 ...

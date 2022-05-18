@@ -41,6 +41,7 @@ ID | Type | Default | Description
 `workload` | String | *Required input* | Kubernetes workload `type/name` such as `deploy/mydeploy`, `svc/mysvc` or `po/mypod`
 `mappings` | String  | `8080:80` | Ports mappings `[LOCAL_PORT:]REMOTE_PORT [...[LOCAL_PORT_N:]REMOTE_PORT_N]`
 `options` | String | `<empty>` | Other command-line options, such as `--namespace=myns`
+`sleep` | String | `3` | Seconds to wait before action finished
 
 ## Outputs
 
