@@ -10,7 +10,7 @@ This action can be used to [forward](https://kubernetes.io/docs/tasks/access-app
 
 Current implementation is to setup a `kubectl port-forward` daemon in backgroud and immune to hangups, which make local ports on runner available to subsequent steps.
 
-Note that this action follow [official *kubeconfig* authentication methods](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) and you need to login your K8s cluster via other actions such as [kubeconfig4sa](https://github.com/marketplace/actions/kubeconfig-for-service-account-sa), or manually set `KUBECONFIG` environment variable for this action in your workflows file.
+Note that this action follow [official *kubeconfig* authentication methods](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) and you need to sign in your K8s cluster via other actions such as [kubeconfig4sa](https://github.com/marketplace/actions/kubeconfig-for-service-account-sa), or manually set `KUBECONFIG` environment variable for this action in your workflows file.
 
 ## Example usage
 
