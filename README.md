@@ -1,3 +1,4 @@
+# k8s-port-forward
 [![Testing](https://github.com/vbem/k8s-port-forward/actions/workflows/test.yml/badge.svg)](https://github.com/vbem/k8s-port-forward/actions/workflows/test.yml)
 [![Super Linter](https://github.com/vbem/k8s-port-forward/actions/workflows/linter.yml/badge.svg)](https://github.com/vbem/k8s-port-forward/actions/workflows/linter.yml)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/vbem/k8s-port-forward?label=Release&logo=github)](https://github.com/vbem/k8s-port-forward/releases)
@@ -21,7 +22,7 @@ Note that this action follow [official *kubeconfig* authentication methods](http
     ca-base64:  ${{ secrets.K8S_CA_BASE64 }}
     token:      ${{ secrets.K8S_SA_TOKEN }}
     namespace:  my-namespace
-    
+
 # This action will forward port 8080 on runner to port 80 of your service in Kubernetes!
 - name: Setup Kubernetes port-forward daemon
   uses: vbem/k8s-port-forward@v1
