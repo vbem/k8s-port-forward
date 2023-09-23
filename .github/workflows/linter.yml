@@ -1,33 +1,16 @@
 ---
-name: Super Linter
+name: Linter
 
-env:
-  TZ: Asia/Shanghai
-
-# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-only-cancel-in-progress-jobs-or-runs-for-the-current-workflow
 concurrency:
   group: ${{ github.workflow }}@${{ github.ref }}
   cancel-in-progress: true
 
 on:
   push:
-    branches: main
+    branches: [master, main]
   workflow_dispatch:
 
 jobs:
-  linter:
-    runs-on: ubuntu-latest
-    steps:
-
-      # https://github.com/marketplace/actions/checkout
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Full git history is needed to get a proper list of changed files within `super-linter`
-
-      # https://github.com/marketplace/actions/super-linter
-      - uses: github/super-linter@v4
-        env:
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_MARKDOWN: false
+  calling:
+    uses: vbem/reusable/.github/workflows/superlinter.yml@v1
 ...
