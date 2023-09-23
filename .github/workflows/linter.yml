@@ -13,4 +13,6 @@ on:
 jobs:
   calling:
     uses: vbem/reusable/.github/workflows/superlinter.yml@main
+    with:
+      inject-rules-from-reusable: false
 ...
